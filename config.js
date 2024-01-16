@@ -30,7 +30,7 @@ export function getConfigFields() {
 			type: 'dropdown',
 			label: 'Matrix Size',
 			id: 'matrix_size',
-			default: '1',
+			default: '8x8',
 			choices: [
 				{ id: '2x2', label: '2x2' },
 				{ id: '4x2', label: '4x2' },

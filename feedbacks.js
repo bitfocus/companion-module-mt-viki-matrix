@@ -85,5 +85,18 @@ export function getFeedbackDefinitions(self) {
 				return self.keylock == 1
 			}
 		},
+		beepEnabled: {
+			type: 'boolean',
+			name: 'Key beep is enabled',
+			description: 'The keys on the front of the switch beep when pressed',
+			options: [],
+			defaultStyle: {
+				color: combineRgb(0, 0, 0),
+				bgcolor: combineRgb(255, 0, 0),
+			},
+			callback: (feedback) => {
+				return self.beepEn == 1
+			},
+		},
 	}
 }

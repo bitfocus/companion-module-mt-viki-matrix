@@ -28,10 +28,15 @@ class MTVikiMatrixInstance extends InstanceBase {
 			{ id: '7', label: 'OUT7' },
 			{ id: '8', label: 'OUT8' },
 		]
+		this.CHOICES_SCENES = []
+		for (let i=1; i<=16; i++) {
+			this.CHOICES_SCENES.push({ id: i, label: `Scene ${i}` })
+		}
 		this.pollMixerTimer = undefined
 		this.selectedInput = 1
 		this.outputRoute = { 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8 }
 		this.keylock = 0
+		this.beepEn = 0
 	}
 
 	getConfigFields() {
@@ -129,6 +134,7 @@ class MTVikiMatrixInstance extends InstanceBase {
 				this.log('info', 'Connected')
 				this.sendCommand('GetSW')      //poll current matrix status once upon connect
 				this.sendCommand('GetKeyLock') //poll current keylock status once upon connect
+				this.sendCommand('GetBeepEn')  //poll current beepEn status
 			})
 
 			let receiveBacklog = ''
@@ -179,6 +185,9 @@ class MTVikiMatrixInstance extends InstanceBase {
 						break
 					case 'KeyLockStatus':
 						this.updateLock(tokens[1])
+						break
+					case 'BeepEn':
+						this.updateBeepEn(tokens[1])
 						break
 				}
 				this.checkFeedbacks()
@@ -248,6 +257,18 @@ class MTVikiMatrixInstance extends InstanceBase {
 		}
 
 		this.updateVariableValues()
+	}
+
+	updateBeepEn(state) {
+		if (!this.socket.isConnected) return
+
+		if (state == 0) {
+			this.beepEn = 0
+		} else if (state == 1) {
+			this.beepEn = 1
+		} else {
+			this.log('warn', 'updateBeepEn called with invalid state value')
+		}
 	}
 
 	updateLock(state) {

@@ -60,6 +60,40 @@ export function getActionDefinitions(self) {
 				self.checkFeedbacks()
 			},
 		},
+		save_scene: {
+			name: 'Save Scene',
+			options: [
+				{
+					type: 'dropdown',
+					label: 'Scene',
+					id: 'scene',
+					default: 1,
+					choices: self.CHOICES_SCENES,
+				},
+			],
+			callback: (action) => {
+				self.sendCommand(`SceneSave ${action.options.scene}`)
+
+				self.checkFeedbacks()
+			},
+		},
+		recall_scene: {
+			name: 'Recall Scene',
+			options: [
+				{
+					type: 'dropdown',
+					label: 'Scene',
+					id: 'scene',
+					default: 1,
+					choices: self.CHOICES_SCENES,
+				},
+			],
+			callback: (action) => {
+				self.sendCommand(`SceneCall ${action.options.scene}`)
+
+				self.checkFeedbacks()
+			},
+		},
 		lock_keys: {
 			name: 'Lock keys',
 			options: [],
@@ -88,6 +122,42 @@ export function getActionDefinitions(self) {
 				self.updateLock(1 - self.keylock)
 
 				self.checkFeedbacks()
+			},
+		},
+		enable_beep: {
+			name: 'Enable key beep',
+			options: [],
+			callback: (action) => {
+				self.sendCommand(`SetBeepEn 1`)
+				self.updateLock(1)
+
+				self.checkFeedbacks()
+			},
+		},
+		disable_beep: {
+			name: 'Disable key beep',
+			options: [],
+			callback: (action) => {
+				self.sendCommand(`SetBeepEn 0`)
+				self.updateLock(0)
+
+				self.checkFeedbacks()
+			},
+		},
+		toggle_beep: {
+			name: 'Toggle key beep',
+			options: [],
+			callback: (action) => {
+				self.sendCommand(`SetBeepEn ${ 1 - self.beepEn }`)
+
+				self.updateBeepEn(1 - self.beepEn)
+			},
+		},
+		beep: {
+			name: 'Beep',
+			options: [],
+			callback: (action) => {
+				self.sendCommand(`BeepONOnce`)
 			},
 		},
 		all: {

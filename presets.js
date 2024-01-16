@@ -84,7 +84,7 @@ export function getPresetDefinitions(self) {
 	for (const input of self.CHOICES_INPUTS) {
 		presets[`all_${input.id}`] = {
 			type: 'button',
-			category: 'All',
+			category: 'In to All',
 			name: 'All',
 			style: {
 				text: `${input.label}\\nTo All`,
@@ -110,9 +110,62 @@ export function getPresetDefinitions(self) {
 		}
 	}
 
+	for (const scene of self.CHOICES_SCENES) {
+		presets[`save_scene_${scene.id}`] = {
+			type: 'button',
+			category: 'Scenes',
+			name: `save_scene_${scene.id}`,
+			style: {
+				text: `Save Scene ${scene.id}`,
+				size: 'auto',
+				color: combineRgb(255, 255, 255),
+				bgcolor: combineRgb(64, 0, 0),
+			},
+			steps: [
+				{
+					down: [
+						{
+							actionId: 'save_scene',
+							options: {
+								scene: scene.id,
+							},
+						},
+					],
+					up: [],
+				},
+			],
+			feedbacks: [],
+		}
+		presets[`recall_scene_${scene.id}`] = {
+			type: 'button',
+			category: 'Scenes',
+			name: `recall_scene_${scene.id}`,
+			style: {
+				text: `Recall Scene ${scene.id}`,
+				size: 'auto',
+				color: combineRgb(255, 255, 255),
+				bgcolor: combineRgb(0, 64, 0),
+			},
+			steps: [
+				{
+					down: [
+						{
+							actionId: 'recall_scene',
+							options: {
+								scene: scene.id,
+							},
+						},
+					],
+					up: [],
+				},
+			],
+			feedbacks: [],
+		}
+	}
+
 	presets['toggle-keylock'] = {
 		type: 'button',
-		category: 'Lock keys',
+		category: 'Switch keys',
 		name: 'Toggle Keylock',
 		style: {
 			text: 'Toggle Keylock',
@@ -143,6 +196,62 @@ export function getPresetDefinitions(self) {
 		],
 	}
 
+	presets['toggle-beepEn'] = {
+		type: 'button',
+		category: 'Switch keys',
+		name: 'Toggle Key Beep',
+		style: {
+			text: 'Toggle Key Beep',
+			size: 'auto',
+			color: combineRgb(0, 0, 0),
+			bgcolor: combineRgb(255, 0, 0),
+		},
+		steps: [
+			{
+				down: [
+					{
+						actionId: 'toggle_beep',
+						options: {},
+					},
+				],
+				up: [],
+			},
+		],
+		feedbacks: [
+				{
+					feedbackId: 'beepEnabled',
+					options: {},
+					style: {
+						color: combineRgb(255, 255, 255),
+						bgcolor: combineRgb(0, 128, 0),
+					},
+				},
+		],
+	}
+
+	presets['beep'] = {
+		type: 'button',
+		category: 'Switch keys',
+		name: 'Beep',
+		style: {
+			text: 'Beep',
+			size: 'auto',
+			color: combineRgb(255, 255, 255),
+			bgcolor: combineRgb(0, 0, 0),
+		},
+		steps: [
+			{
+				down: [
+					{
+						actionId: 'beep',
+						options: {},
+					},
+				],
+				up: [],
+			},
+		],
+		feedbacks: [],
+	}
 
 	presets['in-to-out'] = {
 		type: 'button',
