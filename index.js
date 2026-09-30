@@ -1,10 +1,10 @@
-import { InstanceBase, InstanceStatus, TCPHelper, runEntrypoint } from '@companion-module/base'
+import { InstanceBase, InstanceStatus, TCPHelper } from '@companion-module/base'
 import { getActionDefinitions } from './actions.js'
 import { getFeedbackDefinitions } from './feedbacks.js'
 import { getPresetDefinitions } from './presets.js'
 import { getConfigFields } from './config.js'
 
-class MTVikiMatrixInstance extends InstanceBase {
+export default class MTVikiMatrixInstance extends InstanceBase {
 	constructor(internal) {
 		super(internal)
 
@@ -100,7 +100,8 @@ class MTVikiMatrixInstance extends InstanceBase {
 
 		this.setActionDefinitions(getActionDefinitions(this))
 		this.setFeedbackDefinitions(getFeedbackDefinitions(this))
-		this.setPresetDefinitions(getPresetDefinitions(this))
+		const { categories, presets } = getPresetDefinitions(this)
+		this.setPresetDefinitions(categories, presets)
 		this.initVariables()
 
 		this.initTcpSocket()
@@ -190,7 +191,7 @@ class MTVikiMatrixInstance extends InstanceBase {
 						this.updateBeepEn(tokens[1])
 						break
 				}
-				this.checkFeedbacks()
+				this.checkAllFeedbacks()
 			}
 		}
 	}
@@ -198,7 +199,7 @@ class MTVikiMatrixInstance extends InstanceBase {
 	sendCommand(cmd) {
 		if (cmd !== undefined) {
 			if (this.socket !== undefined && this.socket.isConnected) {
-				this.socket.send(cmd + '\r\n').catch((e) => {
+				this.socket.sendAsync(cmd + '\r\n').catch((e) => {
 					this.log('debug', `Send failed: ${e?.message ?? e}`)
 				})
 			} else {
@@ -284,23 +285,19 @@ class MTVikiMatrixInstance extends InstanceBase {
 	}
 
 	initVariables() {
-		let variableDefinitions = []
+		let variableDefinitions = {}
 		this.CHOICES_INPUTS.forEach((item) => {
-			variableDefinitions.push({
-				variableId: `input_route${item.id}`,
+			variableDefinitions[`input_route${item.id}`] = {
 				name: `Input ${item.id}`,
-			})
+			}
 		})
 		this.CHOICES_OUTPUTS.forEach((item) => {
-			variableDefinitions.push({
-				variableId: `output_route${item.id}`,
+			variableDefinitions[`output_route${item.id}`] = {
 				name: `Output ${item.id}`,
-			})
+			}
 		})
 		this.setVariableDefinitions(variableDefinitions)
 
 		this.updateVariableValues()
 	}
 }
-
-runEntrypoint(MTVikiMatrixInstance, [])
