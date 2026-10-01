@@ -14,7 +14,7 @@ export function getActionDefinitions(self) {
 			callback: (action) => {
 				self.selectedInput = action.options.input
 
-				self.checkFeedbacks()
+				self.checkAllFeedbacks()
 			},
 		},
 		switch_output: {
@@ -32,7 +32,7 @@ export function getActionDefinitions(self) {
 				self.sendCommand(`SW ${self.selectedInput} ${action.options.output}`)
 				self.updateRoute(action.options.output, self.selectedInput)
 
-				self.checkFeedbacks()
+				self.checkAllFeedbacks()
 			},
 		},
 		input_output: {
@@ -57,7 +57,7 @@ export function getActionDefinitions(self) {
 				self.sendCommand(`SW ${action.options.input} ${action.options.output}`)
 				self.updateRoute(action.options.output, action.options.input)
 
-				self.checkFeedbacks()
+				self.checkAllFeedbacks()
 			},
 		},
 		save_scene: {
@@ -74,7 +74,7 @@ export function getActionDefinitions(self) {
 			callback: (action) => {
 				self.sendCommand(`SceneSave ${action.options.scene}`)
 
-				self.checkFeedbacks()
+				self.checkAllFeedbacks()
 			},
 		},
 		recall_scene: {
@@ -91,7 +91,7 @@ export function getActionDefinitions(self) {
 			callback: (action) => {
 				self.sendCommand(`SceneCall ${action.options.scene}`)
 
-				self.checkFeedbacks()
+				self.checkAllFeedbacks()
 			},
 		},
 		lock_keys: {
@@ -101,7 +101,7 @@ export function getActionDefinitions(self) {
 				self.sendCommand(`SetKeyLock 1`)
 				self.updateLock(1)
 
-				self.checkFeedbacks()
+				self.checkAllFeedbacks()
 			},
 		},
 		unlock_keys: {
@@ -111,7 +111,7 @@ export function getActionDefinitions(self) {
 				self.sendCommand(`SetKeyLock 0`)
 				self.updateLock(0)
 
-				self.checkFeedbacks()
+				self.checkAllFeedbacks()
 			},
 		},
 		toggle_keylock: {
@@ -121,7 +121,7 @@ export function getActionDefinitions(self) {
 				self.sendCommand(`SetKeyLock ${ 1 - self.keylock }`)
 				self.updateLock(1 - self.keylock)
 
-				self.checkFeedbacks()
+				self.checkAllFeedbacks()
 			},
 		},
 		enable_beep: {
@@ -131,7 +131,7 @@ export function getActionDefinitions(self) {
 				self.sendCommand(`SetBeepEn 1`)
 				self.updateLock(1)
 
-				self.checkFeedbacks()
+				self.checkAllFeedbacks()
 			},
 		},
 		disable_beep: {
@@ -141,7 +141,7 @@ export function getActionDefinitions(self) {
 				self.sendCommand(`SetBeepEn 0`)
 				self.updateLock(0)
 
-				self.checkFeedbacks()
+				self.checkAllFeedbacks()
 			},
 		},
 		toggle_beep: {
@@ -187,7 +187,7 @@ export function getActionDefinitions(self) {
 					self.updateRoute(key, myInput)
 				}
 
-				self.checkFeedbacks()
+				self.checkAllFeedbacks()
 			},
 		},
 	}

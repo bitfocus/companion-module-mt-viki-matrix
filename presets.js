@@ -280,5 +280,17 @@ export function getPresetDefinitions(self) {
 		feedbacks: [],
 	}
 
-	return presets
+	const categories = []
+	for (const [id, preset] of Object.entries(presets)) {
+		let category = categories.find((item) => item.id === preset.category)
+		if (!category) {
+			category = { id: preset.category, name: preset.category, definitions: [] }
+			categories.push(category)
+		}
+		category.definitions.push(id)
+		preset.type = 'simple'
+		delete preset.category
+	}
+
+	return { categories, presets }
 }
